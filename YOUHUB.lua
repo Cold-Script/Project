@@ -15,6 +15,7 @@ local Window = Library:CreateWindow({
 	TabPadding = 2,
 	MenuFadeTime = 0
 })
+local flags ={hintrush=false,hintrushhee=false,light=false,instapp=false,noseek=false,nogates=false,nopuzzle=false,noa90=false,noskeledoors=false,noseekarmsfire=false,noscreech=false,nodupe=false,getcode=false,getcodet=false,roomsnolock=false,draweraura=false,autorooms=false,itemsaura=false,autopulllever=false,bookcollecter=false,breakercollecter=false};
 --// Tab \\
 local Tab = Window:AddTab("Chính", "rbxassetid://4335489011")
 local Tab2 = Window:AddTab("Gian Lận", "rbxassetid://10653012630")
@@ -208,6 +209,8 @@ end
 end)
 end
 })
+Group:AddButton({Text="Chết",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Sảnh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Lobby:FireServer() end})
+Group:AddButton({Text="Chơi Tiếp",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.PlayAgain:FireServer() end}):AddButton({Text="Hồi Sinh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Revive:FireServer() end})
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 if _G.FastCloset and game.Players.LocalPlayer.Character:GetAttribute("Hiding")==true then 
 game:GetService("ReplicatedStorage").EntityInfo.CamLock:FireServer()end end)
@@ -294,3 +297,122 @@ Add.Right:AddToggle("MyToggle",{
 _G.EnabledPress = v
 end
 })
+if _G.AntiEyes then if workspace:FindFirstChild("Eyes") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Eyes",
+    Default = false,
+    Callback = function(v)
+_G.AntiEyes = v
+end
+})
+if _G.AntiLookman then if workspace:FindFirstChild("BackdoorLookman") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Lookman",
+    Default = false,
+    Callback = function(v)
+_G.AntiLookman = v
+end
+})
+Add2.Left:AddDivider()
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+if _G.BypassSnare then 
+for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do 
+if (v.Name=="Snare") then v.Hitbox['TouchInterest']:Destroy();end end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Bẫy",
+    Default = false,
+    Callback = function(v)
+_G.BypassSnare = v
+end
+})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.SeekArm then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("Seek_Arm") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="Seek_Arm") then v.AnimatorPart.CanTouch=false;end end end end end);end);game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.SeekFire then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("ChandelierObstruction") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="ChandelierObstruction") then v.HurtPart.CanTouch=false;end end end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Tay Seek",
+    Default = false,
+    Callback = function(v)
+_G.SeekArm = v
+end
+})
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Lửa Đèn",
+    Default = false,
+    Callback = function(v)
+_G.SeekFire = v
+end
+})
+game:GetService("Workspace").DescendantAdded:Connect(function(v)
+if  not _G.antibanananana then return end 
+if v:IsA("Part") then 
+if _G.antibanananana then 
+if (v.Name == "BananaPeel") then 
+v.CanTouch = false 
+end 
+end 
+end 
+end)
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Banana",
+     Default = false,
+     Callback = function(v)
+local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false;end end end end break;end end end})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.SeekChase then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("TiggerEventCollision") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="TriggerEventCollision") then v:Destroy();end end end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Cuộc Chạy Seek",
+     Default = false,
+     Callbacl = function(v)
+_G.SeekChase = v
+end
+})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.AntiMinecart then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("MinecartCollision") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="MinecartCollision") then v:Destroy();end end end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Cuộc Chạy Tàu Lửa",
+     Default = false,
+     Callbacl = function(v)
+_G.AntiMinecart = v 
+end
+})
+Add2.Left:AddDivider()
+Add2.Left:AddToggle("MyToggle",{
+    Text = "Chặn Screech",
+    Default = false,
+    Callback = function(v)
+if v then
+local Screech = game:GetService("ReplicatedStorage").Entities.Screech:Destroy()
+else
+Screech:Disconnect()
+end
+end})
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn A90",
+     Default = false,
+     Callback = function(v)
+flags.noa90 = v
+if v then 
+local v2 = game.ReplicatedStorage:WaitForChild("EntityInfo"):WaitForChild("A90")
+local v3 = 0 local v4 while true do if v3 == 0 then v4 = game.Players.LocalPlayer.PlayerGui:WaitForChild("MainUI"):WaitForChild("Jumpscare"):FindFirstChild("Jumpscare_A90");if v4 then v4.Parent=nil;v2.Parent=nil;repeat task.wait();game.SoundService.Main.Volume=1;until not flags.noa90 v4.Parent= game.Players.LocalPlayers.PlayerGui.MainUI.Jumpscare;v2.Parent=game.ReplicatedStorage:WaitForChild("EntityInfo");end break;end end end end})
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Figure Nghe",
+     Default = false,
+     Callback = function(v)
+if v then
+game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(true)
+else
+game:GetService("ReplicatedStorage").EntityInfo.Crouch:FireServer(false)
+end
+end
+})
+game:GetService("RunService").RenderStepped:Connect(function()pcall(function()
+if _G.antije then for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Knife.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Head.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.HumanoidRootPart.CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Left Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Arm"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v["Right Leg"].CanTouch=false;end end for _,v in pairs(game.workspace:GetChildren()) do if (v.Name=="JeffTheKiller") then v.Torso.CanTouch=false;end end end end);end);
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Jeff The Killer",
+     Default = false,
+     Callback = function(v)
+_G.antije = v
+end
+})
+
