@@ -27,12 +27,12 @@ local Add = {
 --// Group Tab2 \\
 local Add2 = {
   Left = Tab2:AddLeftGroupbox("Thực Thể"),
-  Right = Tab2:AddLeftGroupbox("Thị giác")
+  Right = Tab2:AddRightGroupbox("Thị giác")
 }
 --// Group Tab3 \\
 local Add3 = {
   Left = Tab3:AddLeftGroupbox("Giao Diện"),
-  Right = Tab3:AddLeftGroupbox("Được Tạo Bởi")
+  Right = Tab3:AddRightGroupbox("Được Tạo Bởi")
 }
 Add.Left:AddSlider("MySlider",{
     Text = "Tốc Độ",
