@@ -22,7 +22,7 @@ local Tab3 = Window:AddTab("Cài Đặt", "rbxassetid://8571432274")
 --// Group Tab \\
 local Add = {
   Left = Tab:AddLeftGroupbox("Người Chơi"),
-  Right = Tab:AddRightGroupbox("Tự Động")
+  Right = Tab:AddRightGroupbox("Trợ Giúp")
 }
 --// Group Tab2 \\
 local Add2 = {
@@ -148,7 +148,32 @@ end
 end
 end)
 end)
-Add.Left:AddToggle("Toggle",{
+Add.Left:AddToggle("MyToggle",{
+	Text = "Không Trơn",
+	Default = false,
+	Callback = function(v)
+_G.NoSlow = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character.Head.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftHand.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftLowerArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftLowerLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftUpperArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LeftUpperLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.LowerTorso.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightFoot.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightHand.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightLowerArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightLowerLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightUpperArm.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.RightUpperLeg.Massless = not _G.NoSlow;
+game.Players.LocalPlayer.Character.UpperTorso.Massless = not _G.NoSlow;
+end)
+end
+})
+Add.Left:AddToggle("MyToggle",{
 	Text = "Xuyên Tường",
 	Default = false,
 	Callback = function(value)
@@ -159,3 +184,35 @@ v.CanCollide = true
 end 
 end
 })
+Add.Left:AddToggle("EnableJump",{
+    Text = "Có Thể Nhảy",
+    Default = false,
+    Callback = function(v)
+_G.Jump = v
+game:GetService("RunService").RenderStepped:Connect(function()
+game.Players.LocalPlayer.Character:SetAttribute("CanJump", _G.Jump)
+end)
+end
+})
+Add.Left:AddToggle("MySlider",{
+	Text = "Độ Cao Thần"
+	Default = 20,
+	Min = 20, Max = 30,
+	Rounding = 1,
+	Compact = true,
+	Callback = function(v)
+	_G.GodTeller = v
+end
+})
+Add.Left:AddToggle("MyToggle",{
+	Text = "Thần",
+	Default = false,
+        Callback = function(v)
+if v then
+local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
+Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller or -20,0)
+else
+local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
+Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller or 20,0)
+end
+end})
