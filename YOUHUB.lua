@@ -297,6 +297,8 @@ Add.Right:AddToggle("MyToggle",{
 _G.EnabledPress = v
 end
 })
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
 if _G.AntiEyes then if workspace:FindFirstChild("Eyes") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
 Add2.Left:AddToggle("MyToggle",{
     Text = "Chặn Eyes",
@@ -305,6 +307,8 @@ Add2.Left:AddToggle("MyToggle",{
 _G.AntiEyes = v
 end
 })
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
 if _G.AntiLookman then if workspace:FindFirstChild("BackdoorLookman") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
 Add2.Left:AddToggle("MyToggle",{
     Text = "Chặn Lookman",
