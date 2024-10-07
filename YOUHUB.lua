@@ -194,8 +194,9 @@ game.Players.LocalPlayer.Character:SetAttribute("CanJump", _G.Jump)
 end)
 end
 })
-Add.Left:AddToggle("MySlider",{
-	Text = "Độ Cao Thần"
+_G.GodTeller = 20
+Add.Left:AddSlider("MySlider",{
+	Text = "Độ Cao Thần",
 	Default = 20,
 	Min = 20, Max = 30,
 	Rounding = 1,
@@ -210,9 +211,9 @@ Add.Left:AddToggle("MyToggle",{
         Callback = function(v)
 if v then
 local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
-Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller or -20,0)
+Collison.Position = Collison.Position - Vector3.new(0,-_G.GodTeller,0)
 else
 local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
-Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller or 20,0)
+Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller,0)
 end
 end})
