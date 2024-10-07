@@ -209,8 +209,8 @@ end
 end)
 end
 })
-Group:AddButton({Text="Chết",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Sảnh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Lobby:FireServer() end})
-Group:AddButton({Text="Chơi Tiếp",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.PlayAgain:FireServer() end}):AddButton({Text="Hồi Sinh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Revive:FireServer() end})
+Add.Left:AddButton({Text="Chết",DoubleClick=true,Func = function()game.Players.LocalPlayer.Character.Humanoid.Health = 0 end}):AddButton({Text="Sảnh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Lobby:FireServer() end})
+Add.Left:AddButton({Text="Chơi Tiếp",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.PlayAgain:FireServer() end}):AddButton({Text="Hồi Sinh",DoubleClick=true,Func = function()game:GetService("ReplicatedStorage").EntityInfo.Revive:FireServer() end})
 game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
 if _G.FastCloset and game.Players.LocalPlayer.Character:GetAttribute("Hiding")==true then 
 game:GetService("ReplicatedStorage").EntityInfo.CamLock:FireServer()end end)
@@ -249,57 +249,71 @@ _G.FastDoor = v
 end
 })
 Add.Right:AddDivider()
-game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
-if  not _G.InstanceInteract then return end
-if v:IsA("ProximityPrompt", v) then
-if _G.InstanceInteract then v.HoldDuration = 0
-end end end);
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") and _G.InsInt then
+v.HoldDuration = 0
+end
+end
+end)
+end)
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Nhanh",
     Default = false,
     Callback = function(v)
-_G.InstanceInteract = v
+_G.InsInt = v
 end
 })
-game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
-if  not _G.NoclipInstance then return end
-if v:IsA("ProximityPrompt", v) then
-if _G.NoclipInstance then v.RequiresLineOfSight = false
-else v.RequiresLineOfSight = true
-end end end);
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") and _G.NInt then
+v.RequiresLineOfSight = false
+else
+v.RequiresLineOfSight = true
+end
+end
+end)
+end)
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Xuyên",
     Default = false,
     Callback = function(v)
-_G.NoclipInstance = v
+_G.NInt = v
 end
 })
 Add.Right:AddSlider("MySlider",{
     Text = "Tầm Nhấn",
     Default = 3,
-    Min = 3, Max = 30,
+    Min = 3, Max = 15,
     Rounding = 1,
     Compact = true,
     Callback = function(v)
-    _G.RangePress = v
-end
-})
-game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
-if  not _G.EnabledPress then return end
-if v:IsA("ProximityPrompt", v) then
-if _G.EnabledPress then v.MaxActivationDistance = _G.RangePress or 3
-else v.MaxActivationDistance = 3
-end end end);
-Add.Right:AddToggle("MyToggle",{
-    Text = "Nhận Tầm Nhấn",
-    Default = false,
-    Callback = function(v)
-_G.EnabledPress = v
+    _G.RInt = v
 end
 })
 game:GetService("RunService").RenderStepped:Connect(function()
 pcall(function()
-if _G.AntiEyes then if workspace:FindFirstChild("Eyes") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") and _G.ERInt then
+v.MaxActivationDistance = _G.RInt or 3
+else
+v.MaxActivationDistance = 3						
+end
+end
+end)
+end)
+Add.Right:AddToggle("MyToggle",{
+    Text = "Nhận Tầm Nhấn",
+    Default = false,
+    Callback = function(v)
+_G.ERInt = v
+end
+})
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function()
+pcall(function()
+if _G.AntiEyes then if workspace:FindFirstChild("Eyes") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.AntiEyes and 120) or 0 ,0,false);end end end);end);
 Add2.Left:AddToggle("MyToggle",{
     Text = "Chặn Eyes",
     Default = false,
@@ -307,9 +321,9 @@ Add2.Left:AddToggle("MyToggle",{
 _G.AntiEyes = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function()
 pcall(function()
-if _G.AntiLookman then if workspace:FindFirstChild("BackdoorLookman") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.Eyhasd and 120) or 0 ,0,false);end end end);end);
+if _G.AntiLookman then if workspace:FindFirstChild("BackdoorLookman") then game:GetService("ReplicatedStorage").EntityInfo.MotorReplication:FireServer(0,(_G.AntiLookman and 120) or 0 ,0,false);end end end);end);
 Add2.Left:AddToggle("MyToggle",{
     Text = "Chặn Lookman",
     Default = false,
@@ -351,8 +365,9 @@ game:GetService("Workspace").DescendantAdded:Connect(function(v)
 if  not _G.antibanananana then return end 
 if v:IsA("Part") then 
 if _G.antibanananana then 
-if (v.Name == "BananaPeel") then 
+if v.Name == "BananaPeel" then 
 v.CanTouch = false 
+v.CanCollide = false
 end 
 end 
 end 
@@ -361,7 +376,7 @@ Add2.Left:AddToggle("MyToggle",{
      Text = "Chặn Banana",
      Default = false,
      Callback = function(v)
-local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false;end end end end break;end end end})
+local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false v.CanCollide = false;end end end end break;end end end})
 game:GetService("RunService").RenderStepped:Connect(function()
 pcall(function()if _G.SeekChase then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("TiggerEventCollision") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="TriggerEventCollision") then v:Destroy();end end end end end);end);
 Add2.Left:AddToggle("MyToggle",{
@@ -419,4 +434,65 @@ Add2.Left:AddToggle("MyToggle",{
 _G.antije = v
 end
 })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
