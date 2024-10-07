@@ -184,7 +184,7 @@ v.CanCollide = true
 end 
 end
 })
-Add.Left:AddToggle("EnableJump",{
+Add.Left:AddToggle("MyToggle",{
     Text = "Có Thể Nhảy",
     Default = false,
     Callback = function(v)
@@ -194,26 +194,129 @@ game.Players.LocalPlayer.Character:SetAttribute("CanJump", _G.Jump)
 end)
 end
 })
-_G.GodTeller = 20
-Add.Left:AddSlider("MySlider",{
-	Text = "Độ Cao Thần",
-	Default = 20,
-	Min = 20, Max = 30,
-	Rounding = 1,
-	Compact = true,
-	Callback = function(v)
-	_G.GodTeller = v
+Add.Left:AddToggle("MyToggle",{
+    Text = "Không Gian Chậm",
+    Default = false,
+    Callback = function(v)
+_G.SlowJump = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.SlowJump then
+workspace.Gravity = 50
+else
+workspace.Gravity = 90
+end
+end)
 end
 })
-Add.Left:AddToggle("MyToggle",{
-	Text = "Thần",
-	Default = false,
-        Callback = function(v)
-if v then
-local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
-Collison.Position = Collison.Position - Vector3.new(0,-_G.GodTeller,0)
-else
-local Collison = game.Players.LocalPlayer.Character:FindFirstChild("Collision")
-Collison.Position = Collison.Position - Vector3.new(0,_G.GodTeller,0)
+game.Players.LocalPlayer.Character.Humanoid:GetPropertyChangedSignal("MoveDirection"):Connect(function()
+if _G.FastCloset and game.Players.LocalPlayer.Character:GetAttribute("Hiding")==true then 
+game:GetService("ReplicatedStorage").EntityInfo.CamLock:FireServer()end end)
+Add.Right:AddToggle("MyToggle",{
+    Text = "Ra Tủ Nhanh",
+    Default = false,
+    Callback = function(value)
+_G.FastCloset = value
 end
-end})
+})
+Add.Right:AddDivider()
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+if _G.OpenDoorFar then game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Door").ClientOpen:FireServer()
+end 
+end)
+end)
+Add.Right:AddToggle("MyToggle",{
+    Text = "Mở Cửa Xa",
+    Default = false,
+    Callback = function(v)
+_G.OpenDoorFar = v
+end
+})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()
+if _G.FastDoor then game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Door").FastOpen = true
+end 
+end)
+end)
+Add.Right:AddToggle("MyToggle",{
+    Text = "Mở Cửa Nhanh",
+    Default = false,
+    Callback = function(v)
+_G.FastDoor = v
+end
+})
+Add.Right:AddDivider()
+Add.Right:AddToggle("MyToggle",{
+    Text = "Nhấn Nhanh",
+    Default = false,
+    Callback = function(v)
+_G.InstanceInteract = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.InstanceInteract then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = 0
+end
+end
+else
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.HoldDuration = nil
+end
+end
+end)
+end
+})
+Add.Right:AddToggle("MyToggle",{
+    Text = "Nhấn Xuyên",
+    Default = false,
+    Callback = function(v)
+_G.InstanceInteract = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.InstanceInteract then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = not true
+end
+end
+else
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.RequiresLineOfSight = not false
+end
+end
+end)
+end
+})
+Add.Right:AddSlider("MySlider",{
+    Text = "Tầm Nhấn",
+    Default = 1,
+    Min = 1, Max = 30,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+    _G.RangePress = v
+end
+})
+Add.Right:AddToggle("MyToggle",{
+    Text = "Nhận Tầm Nhấn",
+    Default = false,
+    Callback = function(v)
+_G.EnabledPress = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.EnabledPress then
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = _G.RangePress or 1
+end
+end
+else
+for _,v in pairs(workspace:GetDescendants()) do
+if v:IsA("ProximityPrompt") then
+v.MaxActivationDistance = 1
+end
+end
+end
+end)
+end
+})
