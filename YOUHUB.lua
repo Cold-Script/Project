@@ -246,77 +246,51 @@ _G.FastDoor = v
 end
 })
 Add.Right:AddDivider()
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if  not _G.InstanceInteract then return end
+if v:IsA("ProximityPrompt", v) then
+if _G.InstanceInteract then v.HoldDuration = 0
+end end end);
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Nhanh",
     Default = false,
     Callback = function(v)
 _G.InstanceInteract = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.InstanceInteract then
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.HoldDuration = 0
-end
-end
-else
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.HoldDuration = nil
-end
-end
-end)
 end
 })
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if  not _G.NoclipInstance then return end
+if v:IsA("ProximityPrompt", v) then
+if _G.NoclipInstance then v.RequiresLineOfSight = false
+else v.RequiresLineOfSight = true
+end end end);
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Xuyên",
     Default = false,
     Callback = function(v)
-_G.InstanceInteract = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.InstanceInteract then
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = not true
-end
-end
-else
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.RequiresLineOfSight = not false
-end
-end
-end)
+_G.NoclipInstance = v
 end
 })
 Add.Right:AddSlider("MySlider",{
     Text = "Tầm Nhấn",
-    Default = 1,
-    Min = 1, Max = 30,
+    Default = 3,
+    Min = 3, Max = 30,
     Rounding = 1,
     Compact = true,
     Callback = function(v)
     _G.RangePress = v
 end
 })
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if  not _G.EnabledPress then return end
+if v:IsA("ProximityPrompt", v) then
+if _G.EnabledPress then v.MaxActivationDistance = _G.RangePress or 3
+else v.MaxActivationDistance = 3
+end end end);
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhận Tầm Nhấn",
     Default = false,
     Callback = function(v)
 _G.EnabledPress = v
-game:GetService("RunService").RenderStepped:Connect(function()
-if _G.EnabledPress then
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.MaxActivationDistance = _G.RangePress or 1
-end
-end
-else
-for _,v in pairs(workspace:GetDescendants()) do
-if v:IsA("ProximityPrompt") then
-v.MaxActivationDistance = 1
-end
-end
-end
-end)
 end
 })
