@@ -283,16 +283,6 @@ Add.Right:AddToggle("MyToggle",{
 _G.NInt = v
 end
 })
-Add.Right:AddSlider("MySlider",{
-    Text = "Tầm Nhấn",
-    Default = 3,
-    Min = 3, Max = 15,
-    Rounding = 1,
-    Compact = true,
-    Callback = function(v)
-    _G.RInt = v
-end
-})
 game:GetService("RunService").RenderStepped:Connect(function()
 pcall(function()
 for _,v in pairs(workspace:GetDescendants()) do
@@ -304,6 +294,16 @@ end
 end
 end)
 end)
+Add.Right:AddSlider("MySlider",{
+    Text = "Tầm Nhấn",
+    Default = 3,
+    Min = 3, Max = 15,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+    _G.RInt = v
+end
+})
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhận Tầm Nhấn",
     Default = false,
