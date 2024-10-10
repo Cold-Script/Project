@@ -249,12 +249,10 @@ _G.FastDoor = v
 end
 })
 Add.Right:AddDivider()
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function(v)
 pcall(function()
-for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") and _G.InsInt then
 v.HoldDuration = 0
-end
 end
 end)
 end)
@@ -265,14 +263,12 @@ Add.Right:AddToggle("MyToggle",{
 _G.InsInt = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function(v)
 pcall(function()
-for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") and _G.NInt then
 v.RequiresLineOfSight = false
 else
 v.RequiresLineOfSight = true
-end
 end
 end)
 end)
@@ -283,14 +279,12 @@ Add.Right:AddToggle("MyToggle",{
 _G.NInt = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function()
+game:GetService("RunService").RenderStepped:Connect(function(v)
 pcall(function()
-for _,v in pairs(workspace:GetDescendants()) do
 if v:IsA("ProximityPrompt") and _G.ERInt then
 v.MaxActivationDistance = _G.RInt or 3
 else
 v.MaxActivationDistance = 3						
-end
 end
 end)
 end)
