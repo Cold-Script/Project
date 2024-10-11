@@ -359,7 +359,7 @@ _G.SeekFire = v
 end
 })
 game:GetService("Workspace").DescendantAdded:Connect(function(v)
-if  not _G.antibanananana then return end 
+if not _G.antibanananana then return end 
 if v:IsA("Part") then 
 if _G.antibanananana then 
 if v.Name == "BananaPeel" then 
@@ -373,7 +373,7 @@ Add2.Left:AddToggle("MyToggle",{
      Text = "Chặn Banana",
      Default = false,
      Callback = function(v)
-local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false v.CanCollide = false;end end end end break;end end end})
+local v2=0;while true do if v2 == 0 then _G.antibanananana=v;if (_G.antibanananana==true) then for _,v in pairs(game:GetService("Workspace"):GetDescendants()) do if v:IsA("Part") then if (v.Name=="BananaPeel") then v.CanTouch=false v.CanCollide=false;end end end end break;end end end})
 game:GetService("RunService").RenderStepped:Connect(function()
 pcall(function()if _G.SeekChase then if game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):FindFirstChild("TiggerEventCollision") then for _,v in pairs(game.workspace.CurrentRooms[tostring(game:GetService("ReplicatedStorage").GameData.LatestRoom.Value)]:WaitForChild("Assets"):GetChildren()) do if (v.Name=="TriggerEventCollision") then v:Destroy();end end end end end);end);
 Add2.Left:AddToggle("MyToggle",{
@@ -495,6 +495,25 @@ Add2.Left:AddToggle("MyToggle",{
 _G.AntiDam = v
 end
 })
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.AntiHolyHand then
+for _, room in pairs(workspace:GetDescendants()) do
+for _, holy in pairs(room:GetDescendants()) do
+if holy.Name == "HolynadeLive" then
+holy.CanTouch = not true
+end
+end
+end
+end
+end)
+end)
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Vụ Nổ",
+     Default = false,
+     Callback = function(v)
+_G.AntiHolyHand = v
+end
+})
 Add2.Right:AddLabel("Ánh Màu"):AddColorPicker("MyColorPicker",{
             Default = Color3.new(1, 1, 1),
 	    Callback = function(v)
@@ -538,7 +557,7 @@ Add2.Right:AddDivider()
 Add2.Right:AddSlider("MySlider",{
     Text = "Tầm Nhìn",
     Default = 70,
-    Min = 70, Max = 120,
+    Min = 70, Max = 150,
     Rounding = 1,
     Compact = true,
     Callback = function(v)
@@ -566,9 +585,9 @@ Add2.Right:AddToggle("MyToggle",{
 task.spawn(function()
         if v then
             workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * CFrame.fromOrientation(0, ({workspace.CurrentCamera.CFrame:ToOrientation()})[2], 0)
-            game.Players.LocalPlayer.Character.Head.Transparency = 0
-            for i, v in game.Players.LocalPlayer.Character:GetChildren() do
+            game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position) * CFrame.fromOrientation(0, ({workspace.CurrentCamera.CFrame:ToOrientation()})[2], 0)
+            game:GetService("Players").LocalPlayer.Character.Head.Transparency = 0
+            for i, v in game:GetService("Players").LocalPlayer.Character:GetChildren() do
                 if v:IsA'Accessory' and v.Name:lower():match('accessory') then
                     for name, src in v:GetChildren() do
                         pcall(function()
@@ -579,8 +598,8 @@ task.spawn(function()
             end
         else
             workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-            game.Players.LocalPlayer.Character.Head.Transparency = 1
-            for i, v in game.Players.LocalPlayer.Character:GetChildren() do
+            game:GetService("Players").LocalPlayer.Character.Head.Transparency = 1
+            for i, v in game:GetService("Players").LocalPlayer.Character:GetChildren() do
                 if v:IsA'Accessory' and v.Name:lower():match('accessory') then
                     for name, src in v:GetChildren() do
                         pcall(function()
@@ -594,11 +613,18 @@ task.spawn(function()
 end
 })
 Add2.Right:AddDivider()
+Add2.Right:AddLabel("Ánh Màu Mặt"):AddColorPicker("MyColorPicker",{
+            Default = Color3.new(1, 1, 1),
+	    Callback = function(v)
+game:GetService("RunService").RenderStepped:Connect(function()
+_G.ColorHeadAmbient = v
+end)
+end})
 Add2.Right:AddSlider("MySlider",{
     Text = "Ánh Sáng Mặt",
-    Default = 1,
-    Min = 1, Max = 5,
-    Rounding = 1,
+    Default = 2.5,
+    Min = 2.5, Max = 5,
+    Rounding = 1.5,
     Compact = true,
     Callback = function(v)
     _G.LHead = v
@@ -606,22 +632,29 @@ end
 })
 Add2.Right:AddSlider("MySlider",{
     Text = "Độ Xa Ánh Sáng Mặt",
-    Default = 0,
-    Min = 0, Max = 70,
+    Default = 50,
+    Min = 50, Max = 100,
     Rounding = 1,
     Compact = true,
     Callback = function(v)
     _G.LHeadR = v
 end
 })
+Add2.Right:AddToggle("MyToggle",{
+    Text = "Ánh Sáng Đầu",
+    Default = false,
+    Callback = function(v)
+_G.ELHead = v
+end
+})
 game:GetService("RunService").RenderStepped:Connect(function()
 local ah = Instance.new("PointLight")
-ah.Enabled = false
+ah.Enabled = _G.ELHead
 ah.Range = _G.LHeadR or 0
-ah.Color = Color3.new(1,1,1)
+ah.Color = _G.ColorHeadAmbient or Color3.new(1,1,1)
 ah.Shadows = false
-ah.Parent = ag.root
-	end)
+ah.Parent = game.Players.LocalPlayer.Character.Head
+end)
 
 
 
