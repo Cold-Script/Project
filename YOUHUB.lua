@@ -495,25 +495,7 @@ Add2.Left:AddToggle("MyToggle",{
 _G.AntiDam = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function()
-pcall(function()if _G.AntiHolyHand then
-for _, room in pairs(workspace:GetDescendants()) do
-for _, holy in pairs(room:GetDescendants()) do
-if holy.Name == "HolynadeLive" then
-holy.CanTouch = not true
-end
-end
-end
-end
-end)
-end)
-Add2.Left:AddToggle("MyToggle",{
-     Text = "Chặn Vụ Nổ",
-     Default = false,
-     Callback = function(v)
-_G.AntiHolyHand = v
-end
-})
+
 Add2.Right:AddLabel("Ánh Màu"):AddColorPicker("MyColorPicker",{
             Default = Color3.new(1, 1, 1),
 	    Callback = function(v)
@@ -612,49 +594,7 @@ task.spawn(function()
     end)
 end
 })
-Add2.Right:AddDivider()
-Add2.Right:AddLabel("Ánh Màu Mặt"):AddColorPicker("MyColorPicker",{
-            Default = Color3.new(1, 1, 1),
-	    Callback = function(v)
-game:GetService("RunService").RenderStepped:Connect(function()
-_G.ColorHeadAmbient = v
-end)
-end})
-Add2.Right:AddSlider("MySlider",{
-    Text = "Ánh Sáng Mặt",
-    Default = 2.5,
-    Min = 2.5, Max = 5,
-    Rounding = 1.5,
-    Compact = true,
-    Callback = function(v)
-    _G.LHead = v
-end
-})
-Add2.Right:AddSlider("MySlider",{
-    Text = "Độ Xa Ánh Sáng Mặt",
-    Default = 50,
-    Min = 50, Max = 100,
-    Rounding = 1,
-    Compact = true,
-    Callback = function(v)
-    _G.LHeadR = v
-end
-})
-Add2.Right:AddToggle("MyToggle",{
-    Text = "Ánh Sáng Đầu",
-    Default = false,
-    Callback = function(v)
-_G.ELHead = v
-end
-})
-game:GetService("RunService").RenderStepped:Connect(function()
-local ah = Instance.new("PointLight")
-ah.Enabled = _G.ELHead
-ah.Range = _G.LHeadR or 0
-ah.Color = _G.ColorHeadAmbient or Color3.new(1,1,1)
-ah.Shadows = false
-ah.Parent = game.Players.LocalPlayer.Character.Head
-end)
+
 
 
 
