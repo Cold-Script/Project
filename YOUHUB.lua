@@ -88,7 +88,7 @@ Add.Left:AddDivider()
 Add.Left:AddSlider("MySlider",{
     Text = "Độ Mờ Cơ Thể",
     Default = 0.1,
-    Min = 0.1, Max = 0.9,
+    Min = 0.1, Max = 1,
     Rounding = 1,
     Compact = true,
     Callback = function(v)
@@ -542,6 +542,30 @@ end)
 end
 })
 Add2.Right:AddDivider()
+Add2.Right:AddSlider("MySlider",{
+    Text = "Tầm Nhìn",
+    Default = 70,
+    Min = 70, Max = 120,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+    _G.FOV = v
+end
+})
+Add2.Right:AddToggle("MyToggle",{
+    Text = "Nhận Tầm Nhìn",
+    Default = false,
+    Callback = function(v)
+_G.EFov = v
+game:GetService("RunService").RenderStepped:Connect(function()
+if _G.EFov then
+workspace.CurrentCamera.FieldOfView = _G.FOV or 70
+else
+workspace.CurrentCamera.FieldOfView = 70
+end
+end)
+end 
+})
 Add2.Right:AddToggle("MyToggle",{
     Text = "Góc nhìn thứ ba",
     Default = false,
