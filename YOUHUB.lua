@@ -400,6 +400,50 @@ else
 Screech:Disconnect()
 end
 end})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.AntiGloomEgg then
+for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
+for _, gloomPile in pairs(room:GetChildren()) do
+if gloomPile.Name == "GloomPile" then
+for _, gloomEgg in pairs(gloomPile:GetDescendants()) do
+if gloomEgg.Name == "Egg" then
+gloomEgg.CanTouch = not true
+end
+end
+end
+end
+end
+end
+end)
+end)
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Trứng Gloom (Đóm)",
+     Default = false,
+     Callback = function(v)
+_G.AntiGloomEgg = v
+end
+})
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.AntiGiggle then
+for _, room in pairs(workspace.CurrentRooms:GetChildren()) do
+for _, giggle in pairs(room:GetChildren()) do
+if giggle.Name == "GiggleCeiling" then
+giggle:WaitForChild("Hitbox", 5).CanTouch = not true
+end
+end
+end
+end
+end)
+end)
+
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Giggle",
+     Default = false,
+     Callbacl = function(v)
+_G.AntiGiggle = v 
+end
+})
+
 Add2.Left:AddToggle("MyToggle",{
      Text = "Chặn A90",
      Default = false,
@@ -428,7 +472,26 @@ Add2.Left:AddToggle("MyToggle",{
 _G.antije = v
 end
 })
-
+game:GetService("RunService").RenderStepped:Connect(function()
+pcall(function()if _G.AntiDam then
+local room = workspace.CurrentRooms:FindFirstChild("100")
+if room and room:FindFirstChild("_DamHandler") then
+local seekFlood = room._DamHandler:FindFirstChild("SeekFloodline")
+if seekFlood then
+seekFlood.CanCollide = false
+seekFlood.CanTouch = false
+end
+end
+end
+end)
+end)
+Add2.Left:AddToggle("MyToggle",{
+     Text = "Chặn Vật Chất Seek",
+     Default = false,
+     Callback = function(v)
+_G.AntiDam = v
+end
+})
 
 
 
