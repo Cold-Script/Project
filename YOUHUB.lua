@@ -249,12 +249,13 @@ _G.FastDoor = v
 end
 })
 Add.Right:AddDivider()
-game:GetService("RunService").RenderStepped:Connect(function(v)
-pcall(function()
-if v:IsA("ProximityPrompt") and _G.InsInt then
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if not _G.InsInt then return end
+if v:IsA("ProximityPrompt") then
+if _G.InsInt then
 v.HoldDuration = 0
 end
-end)
+end
 end)
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Nhanh",
@@ -263,14 +264,15 @@ Add.Right:AddToggle("MyToggle",{
 _G.InsInt = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function(v)
-pcall(function()
-if v:IsA("ProximityPrompt") and _G.NInt then
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if not _G.NInt then return end
+if v:IsA("ProximityPrompt") then
+if _G.NInt then
 v.RequiresLineOfSight = false
 else
 v.RequiresLineOfSight = true
 end
-end)
+end
 end)
 Add.Right:AddToggle("MyToggle",{
     Text = "Nhấn Xuyên",
@@ -288,6 +290,16 @@ v.MaxActivationDistance = 3
 end
 end)
 end)
+game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
+if not _G.IncreasedDistance then return end
+if v.IsA(v,"ProximityPrompt") then
+if _G.IncreasedDistance then
+v.MaxActivationDistance *= _G.RInt or 3
+else
+v.MaxActivationDistance *= 3
+end
+end
+end)
 Add.Right:AddSlider("MySlider",{
     Text = "Tầm Nhấn",
     Default = 3,
@@ -302,7 +314,7 @@ Add.Right:AddToggle("MyToggle",{
     Text = "Nhận Tầm Nhấn",
     Default = false,
     Callback = function(v)
-_G.ERInt = v
+_G.IncreasedDistance = v
 end
 })
 game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function()
@@ -492,14 +504,78 @@ Add2.Left:AddToggle("MyToggle",{
 _G.AntiDam = v
 end
 })
-
-
-
-
-
-
-
-
+Add2.Right:AddLabel("Ánh Màu"):AddColorPicker("MyColorPicker",{
+            Default = Color3.new(1, 1, 1),
+	    Callback = function(v)
+_G.ColorAmbient = v
+end})
+Add2.Right:AddToggle("MyToggle",{
+    Text = "Ánh Sáng",
+    Default = false,
+    Callback = function(v)
+if v then
+game.Lighting.Brightness = 1.5
+game.Lighting.GlobalShadows = false
+game.Lighting.OutdoorAmbient = _G.ColorAmbient or Color3.fromRGB(255, 255, 255)
+else
+game.Lighting.Brightness = 1
+game.Lighting.GlobalShadows = true
+game.Lighting.OutdoorAmbient = Color3.fromRGB(0, 0, 0)
+end
+end
+})
+Add2.Right:AddToggle("MyToggle",{
+    Text = "Không Sương Mù",
+    Default = false,
+    Callback = function(v)
+pcall(function()
+if not game.Lighting:GetAttribute("FogStart") then game.Lighting:SetAttribute("FogStart", game.Lighting.FogStart) end
+if not game.Lighting:GetAttribute("FogEnd") then game.Lighting:SetAttribute("FogEnd", game.Lighting.FogEnd) end
+game.Lighting.FogStart = value and 0 or game.Lighting:GetAttribute("FogStart")
+game.Lighting.FogEnd = value and math.huge or game.Lighting:GetAttribute("FogEnd")
+local fog = game.Lighting:FindFirstChildOfClass("Atmosphere")
+if fog then
+if not fog:GetAttribute("Density") then fog:SetAttribute("Density", fog.Density) end
+fog.Density = value and 0 or fog:GetAttribute("Density")
+end
+end)
+end
+})
+Add2.Right:AddDivider()
+Add2.Right:AddToggle("MyToggle",{
+    Text = "Góc nhìn thứ ba",
+    Default = false,
+    Callback = function(v)
+task.spawn(function()
+        if v then
+            workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position) * CFrame.fromOrientation(0, ({workspace.CurrentCamera.CFrame:ToOrientation()})[2], 0)
+            game.Players.LocalPlayer.Character.Head.Transparency = 0
+            for i, v in game.Players.LocalPlayer.Character:GetChildren() do
+                if v:IsA'Accessory' and v.Name:lower():match('accessory') then
+                    for name, src in v:GetChildren() do
+                        pcall(function()
+                            src.Transparency = 0
+                        end)
+                    end
+                end
+            end
+        else
+            workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+            game.Players.LocalPlayer.Character.Head.Transparency = 1
+            for i, v in game.Players.LocalPlayer.Character:GetChildren() do
+                if v:IsA'Accessory' and v.Name:lower():match('accessory') then
+                    for name, src in v:GetChildren() do
+                        pcall(function()
+                            src.Transparency = 1
+                        end)
+                    end
+                end
+            end
+        end
+    end)
+end
+})
 
 
 
