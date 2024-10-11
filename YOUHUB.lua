@@ -281,22 +281,13 @@ Add.Right:AddToggle("MyToggle",{
 _G.NInt = v
 end
 })
-game:GetService("RunService").RenderStepped:Connect(function(v)
-pcall(function()
-if v:IsA("ProximityPrompt") and _G.ERInt then
-v.MaxActivationDistance = _G.RInt or 3
-else
-v.MaxActivationDistance = 3						
-end
-end)
-end)
 game:GetService("Workspace").CurrentRooms.DescendantAdded:Connect(function(v)
 if not _G.IncreasedDistance then return end
-if v.IsA(v,"ProximityPrompt") then
+if v:IsA("ProximityPrompt") then
 if _G.IncreasedDistance then
-v.MaxActivationDistance *= _G.RInt or 3
+v.MaxActivationDistance = _G.RInt or 3
 else
-v.MaxActivationDistance *= 3
+v.MaxActivationDistance = 3
 end
 end
 end)
@@ -603,8 +594,26 @@ task.spawn(function()
 end
 })
 Add2.Right:AddDivider()
-
-
+Add2.Right:AddSlider("MySlider",{
+    Text = "Ánh Sáng Mặt",
+    Default = 1,
+    Min = 1, Max = 5,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+    _G.LHead = v
+end
+})
+Add2.Right:AddSlider("MySlider",{
+    Text = "Độ Xa Ánh Sáng Mặt",
+    Default = 0,
+    Min = 0, Max = 70,
+    Rounding = 1,
+    Compact = true,
+    Callback = function(v)
+    _G.LHeadR = v
+end
+})
 
 
 
