@@ -507,7 +507,9 @@ end
 Add2.Right:AddLabel("Ánh Màu"):AddColorPicker("MyColorPicker",{
             Default = Color3.new(1, 1, 1),
 	    Callback = function(v)
+game:GetService("RunService").RenderStepped:Connect(function()
 _G.ColorAmbient = v
+end)
 end})
 Add2.Right:AddToggle("MyToggle",{
     Text = "Ánh Sáng",
@@ -600,6 +602,7 @@ task.spawn(function()
     end)
 end
 })
+Add2.Right:AddDivider()
 
 
 
