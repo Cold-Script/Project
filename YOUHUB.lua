@@ -614,8 +614,14 @@ Add2.Right:AddSlider("MySlider",{
     _G.LHeadR = v
 end
 })
-
-
+game:GetService("RunService").RenderStepped:Connect(function()
+local ah = Instance.new("PointLight")
+ah.Enabled = false
+ah.Range = _G.LHeadR or 0
+ah.Color = Color3.new(1,1,1)
+ah.Shadows = false
+ah.Parent = ag.root
+	end)
 
 
 
